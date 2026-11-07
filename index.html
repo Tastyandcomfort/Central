@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>T&C Central — From New Modern Mission</title>
+  
+  <!-- Apple Meta & Theme Configuration -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            apple: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'sans-serif'],
+          },
+          colors: {
+            apple: {
+              blue: '#0071e3',
+              blueHover: '#0077ED',
+              green: '#30d158',
+              orange: '#ff9f0a',
+              red: '#ff453a',
+              purple: '#bf5af2',
+              cardDark: 'rgba(28, 28, 30, 0.65)',
+              cardLight: 'rgba(255, 255, 255, 0.75)',
+            }
+          },
+          animation: {
+            'spin-slow': 'spin 3s linear infinite',
+            'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'ticker': 'ticker 28s linear infinite',
+          },
+          keyframes: {
+            ticker: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Apple SF Pro Style Smooth Rendering */
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+      user-select: none;
+    }
+
+    /* Apple Frosted Glass Utilities */
+    .apple-glass {
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+    }
+
+    /* Custom Apple Spinner */
+    .apple-spinner {
+      position: relative;
+      width: 28px;
+      height: 28px;
+    }
+    .apple-spinner div {
+      position: absolute;
+      left: 44.5%;
+      top: 37%;
+      width: 10%;
+      height: 26%;
+      background: currentColor;
+      border-radius: 50px;
+      animation: apple-spinner-fade 1s linear infinite;
+    }
+    .apple-spinner div:nth-child(1) { transform: rotate(0deg) translate(0, -142%); animation-delay: 0s; }
+    .apple-spinner div:nth-child(2) { transform: rotate(30deg) translate(0, -142%); animation-delay: -0.916s; }
+    .apple-spinner div:nth-child(3) { transform: rotate(60deg) translate(0, -142%); animation-delay: -0.833s; }
+    .apple-spinner div:nth-child(4) { transform: rotate(90deg) translate(0, -142%); animation-delay: -0.75s; }
+    .apple-spinner div:nth-child(5) { transform: rotate(120deg) translate(0, -142%); animation-delay: -0.666s; }
+    .apple-spinner div:nth-child(6) { transform: rotate(150deg) translate(0, -142%); animation-delay: -0.583s; }
+    .apple-spinner div:nth-child(7) { transform: rotate(180deg) translate(0, -142%); animation-delay: -0.5s; }
+    .apple-spinner div:nth-child(8) { transform: rotate(210deg) translate(0, -142%); animation-delay: -0.416s; }
+    .apple-spinner div:nth-child(9) { transform: rotate(240deg) translate(0, -142%); animation-delay: -0.333s; }
+    .apple-spinner div:nth-child(10) { transform: rotate(270deg) translate(0, -142%); animation-delay: -0.25s; }
+    .apple-spinner div:nth-child(11) { transform: rotate(300deg) translate(0, -142%); animation-delay: -0.166s; }
+    .apple-spinner div:nth-child(12) { transform: rotate(330deg) translate(0, -142%); animation-delay: -0.083s; }
+
+    @keyframes apple-spinner-fade {
+      0% { opacity: 1; }
+      100% { opacity: 0.15; }
+    }
+
+    /* iOS Toggle Switch */
+    .ios-toggle {
+      width: 44px;
+      height: 26px;
+      position: relative;
+      border-radius: 9999px;
+      transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .ios-toggle-dot {
+      width: 22px;
+      height: 22px;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      border-radius: 9999px;
+      background: white;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+    input:checked + .ios-toggle {
+      background-color: #30d158;
+    }
+    input:checked + .ios-toggle .ios-toggle-dot {
+      transform: translateX(18px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(140, 140, 145, 0.3);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-[#f5f5f7] dark:bg-[#000000] text-[#1d1d1f] dark:text-[#f5f5f7] min-h-screen transition-colors duration-500 overflow-x-hidden">
+
+  <!-- ================= TOP STATUS BAR / DYNAMIC ISLAND ================= -->
+  <header class="fixed top-0 inset-x-0 z-50 apple-glass bg-white/70 dark:bg-black/60 border-b border-black/5 dark:border-white/10 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+      
+      <!-- Left: Logo & Live Status Indicator -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-apple-blue to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+          TC
+        </div>
+        <div class="flex flex-col">
+          <span class="font-semibold text-sm tracking-tight flex items-center gap-1.5">
+            T&C Central
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-apple-green opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-apple-green"></span>
+            </span>
+          </span>
+          <span class="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">Modern Ecosystem Active</span>
+        </div>
+      </div>
+
+      <!-- Center: Apple Live Clock & Full Date Widget -->
+      <div class="hidden md:flex flex-col items-center">
+        <div id="liveClock" class="text-xs font-semibold tracking-wider font-mono text-zinc-800 dark:text-zinc-200">
+          00:00:00 AM
+        </div>
+        <div id="liveDate" class="text-[10px] text-zinc-500 dark:text-zinc-400">
+          Loading Date...
+        </div>
+      </div>
+
+      <!-- Right: Actions (Search, Notification, Theme, APK) -->
+      <div class="flex items-center space-x-2">
+        <!-- Spotlight Search Trigger -->
+        <button onclick="toggleSpotlight(true)" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-300 transition-all" title="Search (⌘K)">
+          <i data-lucide="search" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Push Alert Manager -->
+        <button onclick="toggleNotificationsModal(true)" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-300 transition-all relative" title="Alert Settings">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-apple-blue rounded-full"></span>
+        </button>
+
+        <!-- APK Download Trigger -->
+        <button onclick="toggleApkModal(true)" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-all">
+          <i data-lucide="smartphone" class="w-3.5 h-3.5 text-apple-blue"></i>
+          <span>App APK</span>
+        </button>
+
+        <!-- Dark/Light Mode Switcher -->
+        <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-300 transition-all" title="Toggle Appearance">
+          <i id="themeIcon" data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= SCROLLING POLICY TICKER ================= -->
+  <div class="fixed top-14 inset-x-0 z-40 bg-zinc-100/90 dark:bg-zinc-900/90 border-b border-black/5 dark:border-white/5 overflow-hidden py-1 apple-glass">
+    <div class="flex items-center text-[11px] font-medium tracking-wide text-zinc-500 dark:text-zinc-400">
+      <div class="px-4 font-semibold text-apple-blue uppercase tracking-wider shrink-0 flex items-center gap-1">
+        <i data-lucide="shield-check" class="w-3 h-3"></i> T&C POLICY:
+      </div>
+      <div class="whitespace-nowrap overflow-hidden flex-1 relative">
+        <div class="inline-block animate-ticker text-zinc-700 dark:text-zinc-300">
+          🌱 Verified 100% Traceability across Farmer Hubs • ⚡ Real-Time Freshness Protocol in Stall • 🛡️ Zero Data Resale Guarantee • 🌐 Decentralized Space & Metaverse Infrastructure • 🌤️ Next-Gen Microclimate Forecasting Deploying Soon
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HERO SECTION ================= -->
+  <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center py-12 md:py-16 space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-apple-blue/10 text-apple-blue dark:bg-apple-blue/20">
+        <span class="w-2 h-2 rounded-full bg-apple-blue animate-pulse"></span>
+        The Unified Ecosystem Architecture
+      </div>
+      
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-white max-w-4xl mx-auto leading-tight">
+        T&C From New Modern Mission
+      </h1>
+      
+      <p class="text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal">
+        A single connected horizon combining farm traceability, culinary comfort, autonomous news reporting, and community space into one standard.
+      </p>
+
+      <!-- Quick Action Buttons -->
+      <div class="pt-4 flex flex-wrap justify-center gap-3">
+        <button onclick="openViewport('T&C Stall', 'https://tastyandcomfort.github.io/T-C/')" class="px-5 py-2.5 rounded-full bg-apple-blue hover:bg-apple-blueHover text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+          <i data-lucide="store" class="w-4 h-4"></i> Enter Stall
+        </button>
+        <button onclick="toggleSpotlight(true)" class="px-5 py-2.5 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-zinc-800 dark:text-white text-sm font-medium border border-black/5 dark:border-white/10 transition-all flex items-center gap-2">
+          <i data-lucide="command" class="w-4 h-4"></i> Search Central
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= BENTO GRID ECOSYSTEM ================= -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- 1. T&C STALL -->
+      <div class="group relative rounded-3xl p-6 bg-white/70 dark:bg-zinc-900/60 border border-black/5 dark:border-white/10 apple-glass hover:scale-[1.01] transition-all duration-300 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-white shadow-lg">
+            <i data-lucide="utensils" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">T&C Stall</h3>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-apple-green bg-apple-green/10 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+              Curated dining, comfort culinary craft, real-time counter tracking, and signature recipe orders.
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="openViewport('T&C Stall', 'https://tastyandcomfort.github.io/T-C/')" class="w-full py-2.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
+            Launch Stall <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. T&C NEWS -->
+      <div class="group relative rounded-3xl p-6 bg-white/70 dark:bg-zinc-900/60 border border-black/5 dark:border-white/10 apple-glass hover:scale-[1.01] transition-all duration-300 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-lg">
+            <i data-lucide="newspaper" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">T&C News</h3>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-apple-blue bg-apple-blue/10 px-2 py-0.5 rounded-full">Live Feed</span>
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+              Daily editorial bulletins, food safety updates, innovation releases, and ecosystem dispatch reports.
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="openViewport('T&C News', 'https://tastyandcomfort.github.io/news/')" class="w-full py-2.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
+            Read News <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. T&C FARMER -->
+      <div class="group relative rounded-3xl p-6 bg-white/70 dark:bg-zinc-900/60 border border-black/5 dark:border-white/10 apple-glass hover:scale-[1.01] transition-all duration-300 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-lime-500 flex items-center justify-center text-white shadow-lg">
+            <i data-lucide="sprout" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">T&C Farmer</h3>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full">Direct Farm</span>
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+              Agricultural supply chain, soil-to-table transparency, harvest yield schedules, and producer direct trade.
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="openViewport('T&C Farmer', 'https://tastyandcomfort.github.io/farmer/')" class="w-full py-2.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
+            Visit Farm Link <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. T&C SPACE -->
+      <div class="group relative rounded-3xl p-6 bg-white/70 dark:bg-zinc-900/60 border border-black/5 dark:border-white/10 apple-glass hover:scale-[1.01] transition-all duration-300 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg">
+            <i data-lucide="orbit" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">T&C Space</h3>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full">Community</span>
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+              Metaverse gathering lounge, creative collaborations, creator workshops, and modern digital reservations.
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="openViewport('T&C Space', 'https://tastyandcomfort.github.io/T-C%20Space/')" class="w-full py-2.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
+            Enter Space <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= FUTURE EXPANSION PREVIEW (T&C WEATHER) ================= -->
+    <div class="mt-8 rounded-3xl p-6 md:p-8 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-transparent border border-black/5 dark:border-white/10 apple-glass">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="space-y-2 max-w-xl">
+          <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-apple-blue">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Standalone Extraction Roadmap
+          </div>
+          <h2 class="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+            T&C Weather — Autonomous Meteorological Engine
+          </h2>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400">
+            Currently synchronized inside Stall and News, T&C Weather is preparing for standalone release with high-precision rainfall maps, harvest humidity sensors, and localized outdoor dining indices.
+          </p>
+        </div>
+        
+        <div class="flex items-center gap-4 bg-white/40 dark:bg-black/40 px-5 py-4 rounded-2xl border border-white/20 dark:border-white/10 backdrop-blur-md">
+          <div class="text-3xl font-light text-zinc-900 dark:text-white flex items-center gap-2">
+            <i data-lucide="cloud-sun" class="w-8 h-8 text-amber-500"></i> 26°C
+          </div>
+          <div class="text-left text-xs text-zinc-500 dark:text-zinc-400 border-l border-black/10 dark:border-white/10 pl-4">
+            <div class="font-semibold text-zinc-800 dark:text-zinc-200">Optimal Harvest</div>
+            <div>Humidity: 58% • Clean Air</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= APPLE IN-APP WINDOW VIEWPORT MODAL ================= -->
+  <div id="viewportModal" class="fixed inset-0 z-50 bg-black/60 apple-glass opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-2 sm:p-4 md:p-6">
+    <div id="viewportWindow" class="w-full h-full max-w-6xl max-h-[92vh] bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-2xl border border-black/10 dark:border-white/10 flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+      
+      <!-- macOS-Style Header Toolbar -->
+      <div class="h-11 bg-zinc-100 dark:bg-[#2c2c2e] border-b border-black/10 dark:border-white/10 flex items-center justify-between px-4 select-none">
+        
+        <!-- Window Traffic Light Buttons -->
+        <div class="flex items-center space-x-2">
+          <button onclick="closeViewport()" class="w-3 h-3 rounded-full bg-apple-red hover:brightness-90 transition-all flex items-center justify-center group" title="Close">
+            <i data-lucide="x" class="w-2 h-2 text-red-950 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </button>
+          <button onclick="minimizeViewport()" class="w-3 h-3 rounded-full bg-apple-orange hover:brightness-90 transition-all flex items-center justify-center group" title="Minimize">
+            <i data-lucide="minus" class="w-2 h-2 text-amber-950 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </button>
+          <button onclick="toggleWindowMaximize()" class="w-3 h-3 rounded-full bg-apple-green hover:brightness-90 transition-all flex items-center justify-center group" title="Full Screen">
+            <i data-lucide="maximize-2" class="w-2 h-2 text-green-950 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </button>
+        </div>
+
+        <!-- Center Address & Title Bar -->
+        <div class="flex items-center gap-2 px-4 py-1 rounded-lg bg-black/5 dark:bg-black/30 border border-black/5 dark:border-white/5 text-xs text-zinc-600 dark:text-zinc-300 max-w-md w-full justify-center">
+          <i data-lucide="lock" class="w-3 h-3 text-apple-green"></i>
+          <span id="viewportTitle" class="font-semibold truncate">App Name</span>
+          <span class="text-zinc-400 dark:text-zinc-500">|</span>
+          <span id="viewportUrlDisplay" class="text-[11px] text-zinc-400 dark:text-zinc-500 truncate">https://...</span>
+        </div>
+
+        <!-- Window Actions -->
+        <div class="flex items-center space-x-2 text-zinc-500">
+          <button onclick="reloadViewport()" class="p-1 rounded hover:bg-black/5 dark:hover:bg-white/10" title="Reload Frame">
+            <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+          </button>
+          <button onclick="openExternal()" class="p-1 rounded hover:bg-black/5 dark:hover:bg-white/10" title="Open in External Tab">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Web Content Frame Container -->
+      <div class="relative flex-1 bg-white dark:bg-black overflow-hidden">
+        
+        <!-- Apple Native Loading Indicator -->
+        <div id="viewportLoader" class="absolute inset-0 bg-white/80 dark:bg-black/80 flex flex-col items-center justify-center z-10 apple-glass">
+          <div class="apple-spinner text-apple-blue">
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          </div>
+          <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-3 tracking-wide">Connecting to T&C Node...</span>
+        </div>
+
+        <iframe id="viewportIframe" class="w-full h-full border-0" sandbox="allow-same-origin allow-scripts allow-forms allow-popups" onload="handleIframeLoad()"></iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= SPOTLIGHT SEARCH MODAL (CMD + K) ================= -->
+  <div id="spotlightModal" class="fixed inset-0 z-50 bg-black/50 apple-glass opacity-0 pointer-events-none transition-opacity duration-200 flex items-start justify-center pt-24 px-4">
+    <div id="spotlightCard" class="w-full max-w-xl bg-white/90 dark:bg-zinc-900/90 rounded-2xl shadow-2xl border border-black/10 dark:border-white/15 overflow-hidden transform scale-95 transition-transform duration-200">
+      
+      <!-- Input -->
+      <div class="p-4 border-b border-black/10 dark:border-white/10 flex items-center gap-3">
+        <i data-lucide="search" class="w-5 h-5 text-zinc-400"></i>
+        <input id="spotlightInput" type="text" placeholder="Search T&C Stall, News, Farmer, Policies, Weather..." oninput="handleSearch(this.value)" class="w-full bg-transparent text-sm md:text-base outline-none text-zinc-900 dark:text-white placeholder-zinc-400 font-medium">
+        <kbd class="text-[10px] font-mono px-2 py-0.5 rounded bg-black/5 dark:bg-white/10 text-zinc-400">ESC</kbd>
+      </div>
+
+      <!-- Quick Results List -->
+      <div id="searchResults" class="max-h-80 overflow-y-auto p-2 space-y-1">
+        <!-- Rendered by JS -->
+      </div>
+      
+      <div class="bg-black/5 dark:bg-black/20 px-4 py-2 text-[11px] text-zinc-400 flex items-center justify-between">
+        <span>Use arrow keys to navigate</span>
+        <span>T&C Central Indexer</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PUSH NOTIFICATIONS & CUSTOMIZATION MODAL ================= -->
+  <div id="notificationsModal" class="fixed inset-0 z-50 bg-black/50 apple-glass opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/15 space-y-5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-xl bg-apple-blue/10 text-apple-blue">
+            <i data-lucide="bell-ring" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-lg text-zinc-900 dark:text-white">Push Alert Engine</h3>
+        </div>
+        <button onclick="toggleNotificationsModal(false)" class="p-1 rounded-full text-zinc-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-zinc-500 dark:text-zinc-400">
+        Personalize real-time alerts. Custom configurations are synchronized instantly with your local browser profile.
+      </p>
+
+      <!-- Preferences Toggles -->
+      <div class="space-y-3">
+        <label class="flex items-center justify-between p-3 rounded-2xl bg-black/5 dark:bg-white/5 cursor-pointer">
+          <div class="pr-2">
+            <div class="text-xs font-semibold text-zinc-900 dark:text-zinc-200">Stall Kitchen Flash Drops</div>
+            <div class="text-[10px] text-zinc-500">Live discounts and freshly baked batches</div>
+          </div>
+          <input type="checkbox" id="alertStall" checked class="hidden">
+          <div class="ios-toggle bg-zinc-300 dark:bg-zinc-700"><div class="ios-toggle-dot"></div></div>
+        </label>
+
+        <label class="flex items-center justify-between p-3 rounded-2xl bg-black/5 dark:bg-white/5 cursor-pointer">
+          <div class="pr-2">
+            <div class="text-xs font-semibold text-zinc-900 dark:text-zinc-200">News Editorial Alerts</div>
+            <div class="text-[10px] text-zinc-500">Breaking bulletins and policy notices</div>
+          </div>
+          <input type="checkbox" id="alertNews" checked class="hidden">
+          <div class="ios-toggle bg-zinc-300 dark:bg-zinc-700"><div class="ios-toggle-dot"></div></div>
+        </label>
+
+        <label class="flex items-center justify-between p-3 rounded-2xl bg-black/5 dark:bg-white/5 cursor-pointer">
+          <div class="pr-2">
+            <div class="text-xs font-semibold text-zinc-900 dark:text-zinc-200">Farmer Harvest Schedules</div>
+            <div class="text-[10px] text-zinc-500">Direct organic intake from partnered soil farms</div>
+          </div>
+          <input type="checkbox" id="alertFarmer" class="hidden">
+          <div class="ios-toggle bg-zinc-300 dark:bg-zinc-700"><div class="ios-toggle-dot"></div></div>
+        </label>
+      </div>
+
+      <div class="pt-2 flex gap-3">
+        <button onclick="requestSystemPushPermission()" class="flex-1 py-2.5 rounded-xl bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-semibold shadow transition-all">
+          Authorize Push Alerts
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= APK DOWNLOAD MODAL ================= -->
+  <div id="apkModal" class="fixed inset-0 z-50 bg-black/50 apple-glass opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/15 text-center space-y-4">
+      <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-apple-blue to-purple-600 flex items-center justify-center text-white mx-auto shadow-xl">
+        <i data-lucide="smartphone" class="w-8 h-8"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">T&C Central for Android</h3>
+        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Version 2.4.0 • Built with Apple Human Guidelines</p>
+      </div>
+
+      <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-4 text-left text-xs space-y-1.5 font-mono text-zinc-600 dark:text-zinc-300">
+        <div>• Size: 18.4 MB</div>
+        <div>• Architecture: Universal (arm64-v8a)</div>
+        <div>• SHA-256: 7f8a9...b401e</div>
+      </div>
+
+      <div class="pt-2 space-y-2">
+        <a href="#download-apk" onclick="triggerApkDownload(event)" class="w-full py-3 rounded-xl bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-bold shadow-lg transition-all flex items-center justify-center gap-2">
+          <i data-lucide="download" class="w-4 h-4"></i> Download APK Package
+        </a>
+        <button onclick="toggleApkModal(false)" class="w-full py-2 text-xs font-medium text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= IN-APP NOTIFICATION TOAST ================= -->
+  <div id="toastNotification" class="fixed top-16 right-4 z-50 transform translate-x-32 opacity-0 pointer-events-none transition-all duration-300 max-w-sm w-full">
+    <div class="apple-glass bg-white/90 dark:bg-zinc-900/90 rounded-2xl p-4 shadow-2xl border border-black/10 dark:border-white/15 flex items-start gap-3">
+      <div id="toastIconContainer" class="p-2 rounded-xl bg-apple-blue/20 text-apple-blue shrink-0">
+        <i data-lucide="info" class="w-4 h-4"></i>
+      </div>
+      <div class="flex-1">
+        <h4 id="toastTitle" class="text-xs font-bold text-zinc-900 dark:text-white">Notification Title</h4>
+        <p id="toastBody" class="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">Notification body details...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= APPLE FOOTER ================= -->
+  <footer class="border-t border-black/5 dark:border-white/10 bg-zinc-100/50 dark:bg-zinc-950/50 pt-12 pb-16 text-zinc-500 dark:text-zinc-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div>
+          <h4 class="font-semibold text-zinc-900 dark:text-zinc-200 uppercase tracking-wider text-[11px] mb-3">Ecosystem</h4>
+          <ul class="space-y-2">
+            <li><button onclick="openViewport('T&C Stall', 'https://tastyandcomfort.github.io/T-C/')" class="hover:underline">T&C Stall</button></li>
+            <li><button onclick="openViewport('T&C News', 'https://tastyandcomfort.github.io/news/')" class="hover:underline">T&C News</button></li>
+            <li><button onclick="openViewport('T&C Farmer', 'https://tastyandcomfort.github.io/farmer/')" class="hover:underline">T&C Farmer</button></li>
+            <li><button onclick="openViewport('T&C Space', 'https://tastyandcomfort.github.io/T-C%20Space/')" class="hover:underline">T&C Space</button></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-zinc-900 dark:text-zinc-200 uppercase tracking-wider text-[11px] mb-3">Next Deployments</h4>
+          <ul class="space-y-2">
+            <li><span class="text-zinc-400">T&C Weather (Standalone)</span></li>
+            <li><button onclick="toggleApkModal(true)" class="hover:underline">T&C Central APK</button></li>
+            <li><span class="text-zinc-400">Autonomous Nodes</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-zinc-900 dark:text-zinc-200 uppercase tracking-wider text-[11px] mb-3">Governance</h4>
+          <ul class="space-y-2">
+            <li><a href="#" onclick="showToast('Security Policy', 'End-to-end data encryption and zero telemetry selling.'); return false;" class="hover:underline">Privacy Policy</a></li>
+            <li><a href="#" onclick="showToast('Terms', 'All rights reserved under Tasty & Comfort Global license.'); return false;" class="hover:underline">Terms of Service</a></li>
+            <li><a href="#" onclick="showToast('Traceability', 'Verified agricultural source certificate.'); return false;" class="hover:underline">Farmer Standards</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-zinc-900 dark:text-zinc-200 uppercase tracking-wider text-[11px] mb-3">Owner & Contact</h4>
+          <ul class="space-y-2">
+            <li class="font-medium text-zinc-800 dark:text-zinc-200">Owner: Tasty & Comfort Team</li>
+            <li>Email: <a href="mailto:contact@tastyandcomfort.github.io" class="text-apple-blue hover:underline">contact@tastyandcomfort.github.io</a></li>
+            <li>Status: All Systems Operational</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-black/5 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
+        <div>
+          Copyright © <span id="copyrightYear">2026</span> T&C Central. All rights reserved.
+        </div>
+        <div>
+          Designed & Architected with Apple Human Interface Principles.
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= LOGICAL JAVASCRIPT ENGINE ================= -->
+  <script>
+    // System Data Registry
+    const ECOSYSTEM = [
+      { name: "T&C Stall", url: "https://tastyandcomfort.github.io/T-C/", icon: "utensils", desc: "Dining, kitchen updates, and signature orders" },
+      { name: "T&C News", url: "https://tastyandcomfort.github.io/news/", icon: "newspaper", desc: "Company bulletins, global insights, press articles" },
+      { name: "T&C Farmer", url: "https://tastyandcomfort.github.io/farmer/", icon: "sprout", desc: "Farm direct transparency and harvest schedules" },
+      { name: "T&C Space", url: "https://tastyandcomfort.github.io/T-C%20Space/", icon: "orbit", desc: "Collaborative lounges and creative metaverse rooms" },
+      { name: "T&C Weather", url: "weather-preview", icon: "cloud-sun", desc: "Upcoming microclimate and humidity sensors" }
+    ];
+
+    let currentActiveUrl = "";
+
+    // 1. Initialize Icons & Components
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initClock();
+      document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+      renderSearchResults("");
+
+      // Spotlight Shortcut (⌘K or Ctrl+K)
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          toggleSpotlight(true);
+        }
+        if (e.key === 'Escape') {
+          toggleSpotlight(false);
+          closeViewport();
+          toggleNotificationsModal(false);
+          toggleApkModal(false);
+        }
+      });
+    });
+
+    // 2. Apple Live Clock & Full Date
+    function initClock() {
+      const clockEl = document.getElementById('liveClock');
+      const dateEl = document.getElementById('liveDate');
+
+      function update() {
+        const now = new Date();
+        clockEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    // 3. Theme Toggle (Light / Dark)
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.setItem('tc-theme', 'light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('tc-theme', 'dark');
+      }
+      lucide.createIcons();
+    }
+
+    // 4. In-App Viewport Window Controls (Iframe Hub)
+    function openViewport(title, url) {
+      if (url === 'weather-preview') {
+        showToast('T&C Weather', 'Weather is currently integrated within Stall & News. Standalone release coming soon!');
+        return;
+      }
+      currentActiveUrl = url;
+      const modal = document.getElementById('viewportModal');
+      const win = document.getElementById('viewportWindow');
+      const iframe = document.getElementById('viewportIframe');
+      const loader = document.getElementById('viewportLoader');
+      const titleEl = document.getElementById('viewportTitle');
+      const urlDisplay = document.getElementById('viewportUrlDisplay');
+
+      titleEl.textContent = title;
+      urlDisplay.textContent = url;
+      loader.classList.remove('hidden');
+      iframe.src = url;
+
+      modal.classList.remove('pointer-events-none', 'opacity-0');
+      win.classList.remove('scale-95');
+      win.classList.add('scale-100');
+    }
+
+    function handleIframeLoad() {
+      const loader = document.getElementById('viewportLoader');
+      setTimeout(() => {
+        loader.classList.add('hidden');
+      }, 350);
+    }
+
+    function closeViewport() {
+      const modal = document.getElementById('viewportModal');
+      const win = document.getElementById('viewportWindow');
+      const iframe = document.getElementById('viewportIframe');
+
+      modal.classList.add('pointer-events-none', 'opacity-0');
+      win.classList.remove('scale-100');
+      win.classList.add('scale-95');
+      setTimeout(() => { iframe.src = ""; }, 300);
+    }
+
+    function minimizeViewport() {
+      closeViewport();
+      showToast("App Minimized", "Access your apps instantly from the Central Grid or ⌘K.");
+    }
+
+    function toggleWindowMaximize() {
+      const win = document.getElementById('viewportWindow');
+      win.classList.toggle('max-w-6xl');
+      win.classList.toggle('max-h-[92vh]');
+    }
+
+    function reloadViewport() {
+      const iframe = document.getElementById('viewportIframe');
+      const loader = document.getElementById('viewportLoader');
+      loader.classList.remove('hidden');
+      iframe.src = iframe.src;
+    }
+
+    function openExternal() {
+      if (currentActiveUrl) window.open(currentActiveUrl, '_blank');
+    }
+
+    // 5. Spotlight Search Logic
+    function toggleSpotlight(show) {
+      const modal = document.getElementById('spotlightModal');
+      const card = document.getElementById('spotlightCard');
+      const input = document.getElementById('spotlightInput');
+
+      if (show) {
+        modal.classList.remove('pointer-events-none', 'opacity-0');
+        card.classList.remove('scale-95');
+        card.classList.add('scale-100');
+        input.value = "";
+        renderSearchResults("");
+        setTimeout(() => input.focus(), 100);
+      } else {
+        modal.classList.add('pointer-events-none', 'opacity-0');
+        card.classList.remove('scale-100');
+        card.classList.add('scale-95');
+      }
+    }
+
+    function handleSearch(query) {
+      renderSearchResults(query.trim().toLowerCase());
+    }
+
+    function renderSearchResults(filter) {
+      const container = document.getElementById('searchResults');
+      const items = ECOSYSTEM.filter(e => e.name.toLowerCase().includes(filter) || e.desc.toLowerCase().includes(filter));
+
+      if (items.length === 0) {
+        container.innerHTML = `<div class="p-4 text-center text-xs text-zinc-400">No matching ecosystem apps found.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map(app => `
+        <div onclick="openViewport('${app.name}', '${app.url}'); toggleSpotlight(false);" class="p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-between cursor-pointer transition-all">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-apple-blue/10 text-apple-blue flex items-center justify-center">
+              <i data-lucide="${app.icon}" class="w-4 h-4"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-xs font-semibold text-zinc-900 dark:text-zinc-200">${app.name}</div>
+              <div class="text-[11px] text-zinc-400 truncate max-w-xs">${app.desc}</div>
+            </div>
+          </div>
+          <span class="text-[10px] text-zinc-400 font-mono">Launch ↵</span>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // 6. Push Notifications Manager
+    function toggleNotificationsModal(show) {
+      const modal = document.getElementById('notificationsModal');
+      if (show) {
+        modal.classList.remove('pointer-events-none', 'opacity-0');
+      } else {
+        modal.classList.add('pointer-events-none', 'opacity-0');
+      }
+    }
+
+    function requestSystemPushPermission() {
+      if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            showToast("Push Active", "You are now tuned into the T&C ecosystem stream!");
+          } else {
+            showToast("Permission Denied", "System push was blocked. Falling back to in-app banners.");
+          }
+          toggleNotificationsModal(false);
+        });
+      } else {
+        showToast("In-App Only", "Browser push not supported on this platform.");
+        toggleNotificationsModal(false);
+      }
+    }
+
+    // 7. APK Modal & Download Flow
+    function toggleApkModal(show) {
+      const modal = document.getElementById('apkModal');
+      if (show) {
+        modal.classList.remove('pointer-events-none', 'opacity-0');
+      } else {
+        modal.classList.add('pointer-events-none', 'opacity-0');
+      }
+    }
+
+    function triggerApkDownload(e) {
+      e.preventDefault();
+      showToast("Download Triggered", "Starting package download for T&C Central APK.");
+      toggleApkModal(false);
+
+      // Create synthetic link to mock/trigger the APK asset download
+      const link = document.createElement('a');
+      link.href = "#"; // Replace with your direct APK download URL (e.g., /app-release.apk)
+      link.setAttribute('download', 'TC-Central.apk');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // 8. Apple Banner Toast Notification System
+    function showToast(title, body) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastBody').textContent = body;
+
+      toast.classList.remove('pointer-events-none', 'opacity-0', 'translate-x-32');
+      toast.classList.add('opacity-100', 'translate-x-0');
+
+      setTimeout(() => {
+        toast.classList.add('pointer-events-none', 'opacity-0', 'translate-x-32');
+        toast.classList.remove('opacity-100', 'translate-x-0');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
